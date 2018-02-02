@@ -64,9 +64,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
 		
 	})
 
-	app.get('/', (req, res) => {
-		res.sendFile(path.join(__dirname,'index.html'));
-	})
+
 
 	app.get('/:cioid', (req, res) => {
 		//console.log(collection.find({"cioid":cioid,"new":"true"}).limit(1))
@@ -92,7 +90,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
 			}
 
 			collection.insert(idObject, (error, results) => {
-				if (error) return next(error)
+				if (error) res.sendStatus(405)
 				res.json(idObject)
 			})
 
@@ -101,7 +99,11 @@ mongodb.MongoClient.connect(url, (error, client) => {
 		}
 	})
 
-  	app.listen(3000)
+	app.get('/', (req, res) => {
+		res.sendFile(path.join(__dirname,'index.html'));
+	})
+
+  	app.listen(3001)
 })
 
 
