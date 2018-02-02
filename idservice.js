@@ -13,7 +13,7 @@ const app = express();
 const salt = "salt" //placeholder
 
 const allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'null');
+    res.header('Access-Control-Allow-Origin', 'cio.cs.au.dk');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
