@@ -8,7 +8,7 @@ The service uses a given participant's name (know by researchers and participant
 Hence, it is possible to identify participants who participate in several studies within in project, but not possible for the researchers who indentify the participant behind a specific user ID.
 The name + birthdate + salt is hashed using SHA-1.
 
-##T he Service
+## The Service
 The server provides three services.
 * GET on <hostname(:port)> will provide a user interface for creating new userID
 * GET on <hostname(:port)>/<userID> will return a JSON declaring whether the userID already exists a a timestamp of its first occurence in the database
