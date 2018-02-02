@@ -36,7 +36,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
 
 	var collection = client.db('cioid').collection("cioids")
 
-	app.use(["/","/:cioid"], (req, res, next) => {
+	app.use(["/post","/:cioid"], (req, res, next) => {
 		//check if ID exists
 
 		if(req.body.namestring && req.body.datestring){
@@ -71,7 +71,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
 		res.send(req.idExists)
 	})
 
-	app.post('/', (req,res) => {
+	app.post('/post', (req,res) => {
 		let newIDrequest = req.body
 		if(newIDrequest.namestring && newIDrequest.datestring){
 			let timestamp = Date.now()
