@@ -10,7 +10,7 @@ const url = 'mongodb://localhost:27017'
 
 const app = express();
 
-const salt = "salt" //placeholder
+const salt = "CIO&vinegar" //placeholder
 
 const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'cio.cs.au.dk');
@@ -64,8 +64,6 @@ mongodb.MongoClient.connect(url, (error, client) => {
 		
 	})
 
-
-
 	app.get('/:cioid', (req, res) => {
 		//console.log(collection.find({"cioid":cioid,"new":"true"}).limit(1))
 		res.send(req.idExists)
@@ -109,6 +107,6 @@ mongodb.MongoClient.connect(url, (error, client) => {
 
 
 function generateCIOID(name, date){
-	return sha1(name.replace(/\s/g, "").toLowerCase() + date.replace(/\s/g, "").toLowerCase() + salt)
+	return sha1(sha1(name.replace(/\s/g, "").toLowerCase() + date.replace(/\s/g, "").toLowerCase()) + salt + date.replace(/\s/g, "").toLowerCase())
 }
 
