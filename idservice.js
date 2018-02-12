@@ -17,7 +17,7 @@ const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-    console.log(req.headers)
+    //console.log(req.headers)
 
     next();
 }
@@ -47,10 +47,10 @@ mongodb.MongoClient.connect(url, (error, client) => {
 			req.cioid =  req.params.cioid
 		}
 
-		console.log(req.cioid)
+		//console.log(req.cioid)
 
 		if(req.cioid){
-			console.log(req.cioid)
+			//console.log(req.cioid)
 			let query = {"cioid":req.cioid, "new":"true"}
 			collection.find(query).limit(1).toArray(function(err, result) {
 		    	if (err) throw err;
