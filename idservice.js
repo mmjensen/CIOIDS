@@ -40,10 +40,10 @@ mongodb.MongoClient.connect(url, (error, client) => {
 		//check if ID exists
 
 		if(req.body.namestring && req.body.datestring){
-			console.log("body here: " + req.body)
+			//console.log("body here: " + req.body)
 			req.cioid = generateCIOID(req.body.namestring, req.body.datestring)
 		} else if(req.params.cioid) {
-			console.log("params here: " + req.params.cioid)
+			//console.log("params here: " + req.params.cioid)
 			req.cioid =  req.params.cioid
 		}
 
@@ -54,7 +54,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
 			let query = {"cioid":req.cioid, "new":"true"}
 			collection.find(query).limit(1).toArray(function(err, result) {
 		    	if (err) throw err;
-		    	console.log(result);
+		    	//console.log(result);
 		    	req.idExists = result 
 		    	next()
 	  		});
@@ -73,9 +73,9 @@ mongodb.MongoClient.connect(url, (error, client) => {
 		let newIDrequest = req.body
 		if(newIDrequest.namestring && newIDrequest.datestring){
 			let timestamp = Date.now()
-			console.log("incoming: " + newIDrequest.namestring)
+			//console.log("incoming: " + newIDrequest.namestring)
 			console.log("returning: " + req.cioid)
-			console.log(req.idExists)
+			//console.log(req.idExists)
 
 			if(typeof req.idExists !== 'undefined' && req.idExists.length > 0){
 				idObject = {"cioid":req.cioid,"timestamp":timestamp,"new":"false"}
@@ -107,6 +107,6 @@ mongodb.MongoClient.connect(url, (error, client) => {
 
 
 function generateCIOID(name, date){
-	return sha1(sha1(name.replace(/\s/g, "").toLowerCase() + date.replace(/\s/g, "").toLowerCase()) + salt + date.replace(/\s/g, "").toLowerCase())
+	return sha1(sha1(name.replace(/\s/g, "").toLowerCase() + date.replace(/\s/g, "").toLowerCase()) + (salt + date.replace(/\s/g, "").toLowerCase()))
 }
 
