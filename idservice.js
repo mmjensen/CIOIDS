@@ -13,11 +13,14 @@ const app = express();
 const salt = "CIO&vinegar" //placeholder
 
 const allowCrossDomain = function(req, res, next) {
+
     res.header('Access-Control-Allow-Origin', 'null');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-    //console.log(req.headers)
+
+    console.log(req.header.origin);
+    
 
     next();
 }
