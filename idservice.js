@@ -24,9 +24,7 @@ const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-
-    console.log(req.headers);
-
+    //console.log(req.headers);
 
     next();
 }
