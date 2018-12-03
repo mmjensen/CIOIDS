@@ -30,7 +30,17 @@
 							xhr.setRequestHeader("Content-type", "application/json");
 							//xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:3000")
 
-							let message = "{\"namestring\":\""+input.value+"\",\"datestring\":\""+ birthDate.value +"\"}"
+							//trim any leading or trailing whitespace (can otherwise be counted as a word by the split() function)
+							let trimmed_input = input.value.trim()
+
+							//remove middle names by extracting the very first and very last name
+                            let split_name = trimmed_input.split(" ")
+							let number_of_names = split_name.length
+
+							//for "backwards compatibility" with participants from 2018 studies
+							let trimmed_NAME = split_name[0] + " " + split_name[number_of_names-1]
+
+							let message = "{\"namestring\":\""+trimmed_NAME+"\",\"datestring\":\""+ birthDate.value +"\"}"
 
 							console.log(message)
 
