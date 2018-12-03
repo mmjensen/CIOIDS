@@ -23,6 +23,18 @@
 						generateID();
 					});
 
+					//populate monthpicker
+					let month_selector = document.getElementById("monthpicker");
+					let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+					for (month in months) {
+					    let option = document.createElement("option");
+					    option.value = parseInt(month) + 1; //we want the input to be the number of the selected month
+					    option.innerHTML = months[month]; //we want the user to see the names of the months
+						month_selector.appendChild(option);
+					}
+					//TODO: Set listener on month and update date max value accordingly (kan man lave switch statements i JavaScript?)
+
+					//TODO: Get birth date from new date input
 					function generateID(){
 						if(input.value && input.value.trim() && birthDate.value){
 							let xhr = new XMLHttpRequest()
@@ -175,7 +187,12 @@
 		<div id="wrap">
 			<div><span id="title"> CIO's <br/> ID Generator</span><hr></div>
 			<input id="inputbar" value="" placeholder="Enter Name..." type="text">
-			<div id="dateselector"> Please select date of birth: <input id="birthdatepicker" type="date" min="1918-01-01" max="2018-01-01" required></div>
+			<div id="old_dateselector"> Please select date of birth: <input id="birthdatepicker" type="date" min="1918-01-01" max="2018-01-01" required></div>
+			<!-- TODO: Make date number fit month (perhaps needs to be done in the script)-->
+			<div id="dateselector"> Please select date of birth:
+				<input id="daypicker" type="number" min="1" max="31" required>
+				<select id="monthpicker" required></select>
+				<input id="yearpicker" type="number" min="1918" max="2018"></div>
 			<input id="generateButton" type="button" value="Generate ID" />
 			<div id="resultfield" style="display: block;"></div>
 		</div>
