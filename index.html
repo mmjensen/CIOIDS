@@ -137,16 +137,14 @@
 							}
 
 
-							//let modifiedString = input.value.replace(/\s/g, "").toLowerCase();
-							//resultField.innerHTML = sha1(modifiedString + "salt"); //it's a joke :)
+							// let modifiedString = input.value.replace(/\s/g, "").toLowerCase();
+							// resultField.innerHTML = sha1(modifiedString + "salt"); //it's a joke :)
 						} else if (day_input && month_input && year_input) {
-                            console.log("NAME MISSING")
 							resultField.innerHTML = "Please enter your first name and your last name!";
 						} else if (name_input){ // NB: Removed check for input.value.trim() (/name_input.trim()) because it did not seem to have an effect /Ida
-							console.log("BIRTH DATE PART MISSING")
+					        //TODO: Check that name is long enough (two names) - o/w ask for that too
 					        resultField.innerHTML = "Please enter your birth date!";
 						} else {
-                            console.log("STUFF MISSING")
                             resultField.innerHTML = "Please enter your name (first and last) and birthday!";
 						}
 					}
@@ -160,6 +158,21 @@
 				font-family: "Helvetica", Sans-serif;
 				text-align: center;
 				margin:0px auto;
+			}
+
+			@media print {
+				.secret {display:none;}
+				#generateButton {display:none;}
+				#resultfield:before {
+					content: "Your ID:\A"; /*insert linebreak*/
+					white-space: pre;} /*make the linebreak actually show*/
+				#title {
+					display: none;
+				}
+				#print_title:before {
+					content: "CIO pseudonym";
+				}
+
 			}
 
 			#wrap {
@@ -188,8 +201,12 @@
 				display:none;
 			}
 
-			#title{
+			#title {
 				font-size: 4em;
+			}
+
+			#print_title {
+				font-size: 3em;
 			}
 
 			#resultfield {
@@ -258,9 +275,9 @@
 
 	<body>
 		<div id="wrap">
-			<div><span id="title"> CIO's <br/> ID Generator</span><hr></div>
-			<input id="inputbar" value="" placeholder="Enter Name..." type="text">
-			<div id="dateselector"> Please select date of birth:
+			<div><span id="title">CIO's <br/> ID Generator</span></br><span id="print_title"></span><hr></div>
+			<input id="inputbar" class="secret" value="" placeholder="Enter Name..." type="text">
+			<div id="dateselector" class="secret"> Please select date of birth:
 				<input id="daypicker" type="number" min="1" max="31" required>
 				<select id="monthpicker" required></select>
 				<input id="yearpicker" type="number" min="1918" max="2018" required></div>
