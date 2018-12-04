@@ -9,6 +9,8 @@
 					let birthDate = document.querySelector("#birthdatepicker")
 					input.focus();
 
+					let current_max_date = 31;
+
 					let resultField = document.querySelector("#resultfield");
 
 					input.addEventListener('keydown', (event) => {
@@ -23,6 +25,19 @@
 						generateID();
 					});
 
+                    let day_selector = document.getElementById("daypicker");
+                    day_selector.oninput = function(){//using oninput as opposed to onchange because the value shown to the user should be updated right away
+                        if(day_selector.value === "") {
+						//leave the field blank as the user is probably about to type something
+						}
+                      	else if(day_selector.value > current_max_date) {
+                          day_selector.value = current_max_date;
+					  	}
+                      	else if(day_selector.value < 1) {
+                          day_selector.value = 1;
+					  	}
+					};
+
 					//populate monthpicker
 					let month_selector = document.getElementById("monthpicker");
 					let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -32,10 +47,49 @@
 					    option.innerHTML = months[month]; //we want the user to see the names of the months
 						month_selector.appendChild(option);
 					}
-					//TODO: Set listener on month and update date max value accordingly (kan man lave switch statements i JavaScript?)
+
+					month_selector.onchange = function(){
+					    let idx_cur_select = month_selector.selectedIndex;
+
+					    switch(idx_cur_select) {
+							case 0: //January
+							case 2: //March
+							case 4: //May
+							case 6: //July
+							case 7: //August
+							case 9: //October
+							case 11: //December
+							    //set max date value to 31
+                                current_max_date = 31;
+                                day_selector.setAttribute("max", current_max_date);
+                                break;
+							case 3: //April
+							case 5: //June
+							case 8: //September
+							case 10: //November
+							    //set max date value to 30 and update date input field if the current value is now invalid
+                                current_max_date = 30;
+                                day_selector.setAttribute("max", current_max_date);
+                                if(day_selector.value > current_max_date){
+                                    day_selector.value = current_max_date;
+                                }
+                                break;
+							case 1: //February
+							    //set max date value to 29 and update date input field if the current value is now invalid
+								current_max_date = 29;
+								day_selector.setAttribute("max", current_max_date);
+								if(day_selector.value > current_max_date){
+								    day_selector.value = current_max_date;
+								}
+								break;
+						}
+					};
+					//TODO: Refactor to not use anonymous functions? (for clarity)
 
 					//TODO: Get birth date from new date input
 					function generateID(){
+					    console.log("DATE: " + day_selector.value + ". " + month_selector.value);
+
 						if(input.value && input.value.trim() && birthDate.value){
 							let xhr = new XMLHttpRequest()
 							xhr.open("POST", "https://cio.cs.au.dk/CIOIDS/post",true)
@@ -192,7 +246,7 @@
 			<div id="dateselector"> Please select date of birth:
 				<input id="daypicker" type="number" min="1" max="31" required>
 				<select id="monthpicker" required></select>
-				<input id="yearpicker" type="number" min="1918" max="2018"></div>
+				<input id="yearpicker" type="number" min="1918" max="2018" required></div>
 			<input id="generateButton" type="button" value="Generate ID" />
 			<div id="resultfield" style="display: block;"></div>
 		</div>
