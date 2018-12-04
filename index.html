@@ -106,8 +106,8 @@
                             let split_name = trimmed_name.split(" ")
 							let number_of_names = split_name.length
 
-							if(number_of_names < 2) {//TODO: Alternatively accept a single name and simply check before creation of trimmed_NAME
-                                resultField.innerHTML = "Please enter both your first name AND your last name!";
+							if(number_of_names < 2) {
+                                resultField.innerHTML = "Please enter both your first name AND your last name.";
                                 return;
 							}
 
@@ -140,12 +140,11 @@
 							// let modifiedString = input.value.replace(/\s/g, "").toLowerCase();
 							// resultField.innerHTML = sha1(modifiedString + "salt"); //it's a joke :)
 						} else if (day_input && month_input && year_input) {
-							resultField.innerHTML = "Please enter your first name and your last name!";
-						} else if (name_input){ // NB: Removed check for input.value.trim() (/name_input.trim()) because it did not seem to have an effect /Ida
-					        //TODO: Check that name is long enough (two names) - o/w ask for that too
-					        resultField.innerHTML = "Please enter your birth date!";
+							resultField.innerHTML = "Please enter your first name and your last name.";
+						} else if (name_input && name_input.trim().split(" ").length > 1){ // NB: Removed check for input.value.trim() (/name_input.trim()) because it did not seem to have an effect /Ida
+					        resultField.innerHTML = "Please enter your date of birth.";
 						} else {
-                            resultField.innerHTML = "Please enter your name (first and last) and birthday!";
+                            resultField.innerHTML = "Please enter your name (first and last) and date of birth.";
 						}
 					}
 				}
