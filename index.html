@@ -86,27 +86,43 @@
 					};
 					//TODO: Refactor to not use anonymous functions? (for clarity)
 
-					//TODO: Get birth date from new date input
 					function generateID(){
-					    console.log("DATE: " + day_selector.value + ". " + month_selector.value);
+					    let name_input = document.getElementById("inputbar").value;
+					    let day_input = document.getElementById("daypicker").value;
+					    let month_input = document.getElementById("monthpicker").value;
+					    let year_input = document.getElementById("yearpicker").value;
 
-						if(input.value && input.value.trim() && birthDate.value){
+						// NB: Removed check for input.value.trim() (/name_input.trim()) because it did not seem to have an effect /Ida
+					    if(name_input && day_input && month_input && year_input){
 							let xhr = new XMLHttpRequest()
 							xhr.open("POST", "https://cio.cs.au.dk/CIOIDS/post",true)
 							xhr.setRequestHeader("Content-type", "application/json");
 							//xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:3000")
 
 							//trim any leading or trailing whitespace (can otherwise be counted as a word by the split() function)
-							let trimmed_input = input.value.trim()
+							let trimmed_name = name_input.trim()
 
 							//remove middle names by extracting the very first and very last name
-                            let split_name = trimmed_input.split(" ")
+                            let split_name = trimmed_name.split(" ")
 							let number_of_names = split_name.length
 
-							//for "backwards compatibility" with participants from 2018 studies
+							if(number_of_names < 2) {//TODO: Alternatively accept a single name and simply check before creation of trimmed_NAME
+                                resultField.innerHTML = "Please enter both your first name AND your last name!";
+                                return;
+							}
+
+							//add space for "backwards compatibility" with participants from 2018 studies
 							let trimmed_NAME = split_name[0] + " " + split_name[number_of_names-1]
 
-							let message = "{\"namestring\":\""+trimmed_NAME+"\",\"datestring\":\""+ birthDate.value +"\"}"
+							//introduce leading zeros on one digit date and month, for "backwards compatibility" with participants from 2018 studies
+							if(day_input < 10){
+							    day_input = "0" + day_input;
+							}
+							if(month_input < 10){
+							    month_input = "0" + month_input;
+							}
+
+							let message = "{\"namestring\":\""+trimmed_NAME+"\",\"datestring\":\""+ year_input + "-" + month_input + "-" + day_input +"\"}"
 
 							console.log(message)
 
@@ -123,12 +139,15 @@
 
 							//let modifiedString = input.value.replace(/\s/g, "").toLowerCase();
 							//resultField.innerHTML = sha1(modifiedString + "salt"); //it's a joke :)
-						} else if (birthDate.value) {
-							resultField.innerHTML = "Please enter your name!";
-						} else if (input.value && input.value.trim()){
-							resultField.innerHTML = "Please enter your birthday!";
+						} else if (day_input && month_input && year_input) {
+                            console.log("NAME MISSING")
+							resultField.innerHTML = "Please enter your first name and your last name!";
+						} else if (name_input){ // NB: Removed check for input.value.trim() (/name_input.trim()) because it did not seem to have an effect /Ida
+							console.log("BIRTH DATE PART MISSING")
+					        resultField.innerHTML = "Please enter your birth date!";
 						} else {
-							resultField.innerHTML = "Please enter your name and birthday!";
+                            console.log("STUFF MISSING")
+                            resultField.innerHTML = "Please enter your name (first and last) and birthday!";
 						}
 					}
 				}
@@ -241,8 +260,6 @@
 		<div id="wrap">
 			<div><span id="title"> CIO's <br/> ID Generator</span><hr></div>
 			<input id="inputbar" value="" placeholder="Enter Name..." type="text">
-			<div id="old_dateselector"> Please select date of birth: <input id="birthdatepicker" type="date" min="1918-01-01" max="2018-01-01" required></div>
-			<!-- TODO: Make date number fit month (perhaps needs to be done in the script)-->
 			<div id="dateselector"> Please select date of birth:
 				<input id="daypicker" type="number" min="1" max="31" required>
 				<select id="monthpicker" required></select>
