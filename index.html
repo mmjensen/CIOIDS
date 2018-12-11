@@ -6,12 +6,13 @@
 				window.onload = () => {
 					console.log("window loaded!");
 					let input = document.querySelector("#inputbar");
-					let birthDate = document.querySelector("#birthdatepicker")
+
 					input.focus();
 
 					let current_max_date = 31;
 
 					let resultField = document.querySelector("#resultfield");
+					let day_selector = document.getElementById("daypicker");
 
 					input.addEventListener('keydown', (event) => {
 						if(event.keyCode == 13){
@@ -25,7 +26,6 @@
 						generateID();
 					});
 
-                    let day_selector = document.getElementById("daypicker");
                     day_selector.oninput = function(){//using oninput as opposed to onchange because the value shown to the user should be updated right away
                         if(day_selector.value === "") {
 						//leave the field blank as the user is probably about to type something
@@ -40,6 +40,7 @@
 
 					//populate monthpicker
 					let month_selector = document.getElementById("monthpicker");
+					let year_selector = document.getElementById("yearpicker");
 					let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 					for (month in months) {
 					    let option = document.createElement("option");
@@ -49,42 +50,22 @@
 					}
 
 					month_selector.onchange = function(){
-					    let idx_cur_select = month_selector.selectedIndex;
-
-					    switch(idx_cur_select) {
-							case 0: //January
-							case 2: //March
-							case 4: //May
-							case 6: //July
-							case 7: //August
-							case 9: //October
-							case 11: //December
-							    //set max date value to 31
-                                current_max_date = 31;
-                                day_selector.setAttribute("max", current_max_date);
-                                break;
-							case 3: //April
-							case 5: //June
-							case 8: //September
-							case 10: //November
-							    //set max date value to 30 and update date input field if the current value is now invalid
-                                current_max_date = 30;
-                                day_selector.setAttribute("max", current_max_date);
-                                if(day_selector.value > current_max_date){
-                                    day_selector.value = current_max_date;
-                                }
-                                break;
-							case 1: //February
-							    //set max date value to 29 and update date input field if the current value is now invalid
-								current_max_date = 29;
-								day_selector.setAttribute("max", current_max_date);
-								if(day_selector.value > current_max_date){
-								    day_selector.value = current_max_date;
-								}
-								break;
-						}
+						console.log("Hej Far!");
+						updateMaxDate(month_selector.selectedIndex, year_selector.value);
 					};
-					//TODO: Refactor to not use anonymous functions? (for clarity)
+
+					year_selector.onchange = function(){
+						console.log("Hej Mor!");
+						updateMaxDate(month_selector.selectedIndex, year_selector.value);
+					};
+
+					function updateMaxDate(month, year){
+						current_max_date = new Date(year, month + 1, 0).getDate(); // year defaults to 0 (empty string) if no year has been filled in
+						day_selector.setAttribute("max", current_max_date);
+						if(day_selector.value > current_max_date){
+							day_selector.value = current_max_date;
+						}
+					}
 
 					function generateID(){
 					    let name_input = document.getElementById("inputbar").value;
@@ -274,9 +255,9 @@
 
 	<body>
 		<div id="wrap">
-			<div><span id="title">CIO's <br/> ID Generator</span></br><span id="print_title"></span><hr></div>
+			<div><span id="title">CIO's <br/> ID Generator</span><br/><span id="print_title"></span><hr></div>
 			<input id="inputbar" class="secret" value="" placeholder="Enter Name..." type="text">
-			<div id="dateselector" class="secret"> Please select date of birth:
+			<div id="dateselector" class="secret"> Please select date of birth:<br/>
 				<input id="daypicker" type="number" min="1" max="31" required>
 				<select id="monthpicker" required></select>
 				<input id="yearpicker" type="number" min="1918" max="2018" required></div>
